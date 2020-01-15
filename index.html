@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <title>Lesons11</title>
+  </head>
+  <body>
+  	<script>
+  		//Test-----------------------------------------------------------------
+  		const student1 = new student("Иван", "Иванов", 1876);
+
+  		console.log(student1.absent());
+  		console.log(student1.present());
+  		console.log(student1.absent());
+  		console.log(student1.present());
+  		console.log(student1.absent());
+
+  		console.log(student1.mark(5));
+  		console.log(student1.mark(3));
+  		console.log(student1.mark(1));
+  		console.log(student1.mark(0));
+  		console.log(student1.mark(10));
+
+  		for (var i = 0; i < 25; i++) {
+  			student1.present();
+  			student1.mark(10);
+  		}
+
+  		console.log(student1)
+
+  		console.log(student1.evalutions);
+  		console.log(student1.attendances);
+  		console.log(student1.getGpa());
+  		console.log(student1.getAge());
+  		console.log(student1.summary());
+
+
+
+  		
+
+  		//Function-constructor-------------------------------------------------
+  		function student(firstName, lastName, birthYear) {
+
+  			//Fields
+  			this.firstName = firstName,
+  			this.lastName = lastName,
+  			this.birthYear = birthYear,
+
+  			this.evalutions = new Array(30);
+  			this.attendances = new Array(30);
+
+  			this.evalutionCounter = createCounter();
+  			this.attendancesCccounter = createCounter();
+
+  			//Method
+  			this.getGpa = () => this.evalutions.reduce((accumulator, currentValue) => accumulator + currentValue) / 30;
+
+  			this.getAge = () => new Date().getFullYear() - this.birthYear;
+
+  			this.present = () => {
+  				let index = this.evalutionCounter();
+  				if (index < 30) {
+  					this.evalutions[index] = true;
+  					return true;
+  				} else {
+  					return false;
+  				}
+  			};
+
+  			this.absent = () => {
+  				let index = this.evalutionCounter();
+  				if (index < 30) {
+  					this.evalutions[index] = false;
+  					return true;
+  				} else {
+  					return false;
+  				}
+  			};
+
+  			this.mark = number => {
+  				let index = this.attendancesCccounter();
+  				if (index < 30) {
+  					if (number < 0) {
+  						this.attendances[index] = 0;
+  					} else if (number > 10) {
+  						this.attendances[index] = 10;
+  					} else {
+  						this.attendances[index] = number;
+  					}
+  					return true;
+  				}
+  				return false;
+  			};
+
+  			this.summary = () => {
+  				let gpa = this.evalutions.reduce((accumulator, currentValue) => accumulator + currentValue) / 30;
+  				let mVisit = this.attendances.reduce((accumulator, currentValue) => accumulator + currentValue) / 30;
+
+  				if (gpa > 9 && mVisit > 0.9) {
+  					return "Ути какой молодчинка!";
+  				} 
+
+  				if (gpa > 9 || mVisit > 0.9) {
+  					return "Норм, но можно лучше";
+  				}
+
+  				return "Редиска!";
+  			};
+
+  			//Helper
+
+  			function createCounter() {
+  				let countValue = 0;
+  				return () => countValue++;
+  			}
+  		}
+  	</script>
+  </body>
+</html>
