@@ -1,110 +1,59 @@
 <html>
   <head>
-    <title>Lesons12</title>
+    <title>Lesons13</title>
   </head>
   <body>
   	<script>
-  		//Function-constructor--------------------------------------------Start
 
-  		function student(firstName, lastName, birthYear) {
+      //Test section----------------------------------------------------------------------------------------
+      const testArray = [1,2, [1.1,1.2,1.3] ,3];
+      generateList(testArray);
+      generateTable(10, 10);
+      
+      //First part section---------------------------------------------------------------------------------
+  		function generateList(array) {
 
-  			//Fields
-  			this.firstName = firstName;
-  			this.lastName = lastName;
-  			this.birthYear = birthYear;
+        const $divElement = document.createElement("div");
+        document.body.append($divElement);
 
-  			this.evalutions = new Array(30);
-  			this.attendances = new Array(30);
-  		}
+        $divElement.insertAdjacentHTML("beforeend", "<h1>generateList [1,2, [1.1,1.2,1.3] ,3]</h1>");
+        $divElement.insertAdjacentHTML("beforeend", createUl(array));
+        
+        function createUl(localArray) {
+          return localArray
+            .reduce((acc, item) => acc + (Array.isArray(item) ? `<li>${createUl(item)}</li>` : `<li>${item}</li>`), "<ul>")
+            + "</ul>";
+        }
+      }
 
-  		student.prototype.getGpa = function() {
-  			return this.evalutions.reduce((accumulator, currentValue) => accumulator + currentValue) / 30;
-  		}
+      //Second part section----------------------------------------------------------------------------------
+      function generateTable(rowQuantity, colQuantity) {
+        let count = 1;
 
-  		student.prototype.getAge = function() {
-  			return new Date().getFullYear() - this.birthYear;
-  		}
+        //Create new container
+        const $divElement = document.createElement("div");
+        document.body.append($divElement);
 
-  		student.prototype.setAttendance = function(bool) {
-  			const currentIndex = this.attendances.findIndex(value => value === undefined);
+        $divElement.insertAdjacentHTML("beforeend", "<h1>generateTable(10, 10)</h1>")
 
-  			if (currentIndex !== -1) {
-	  			this.attendances[currentIndex] = bool;
-	  			return true;
-	  		}
-	  		return false;
-  		}
+        //Create new table
+        const $tableElement = document.createElement("table");
+        $divElement.append($tableElement);
 
-  		student.prototype.present = function() {
-  			return this.setAttendance(true);
-  		};
+        const $tBodyElement = document.createElement("tBody");
+        $tableElement.append($tBodyElement);
 
-  		student.prototype.absent = function() {
-  			return this.setAttendance(false);
-		};
+        //Create tBody part
+        for (let i = 0; i < rowQuantity; i++) {
+          const $trElement = document.createElement("tr");
+          $tBodyElement.append($trElement);
 
-		student.prototype.mark = function(number) {
-			const currentIndex = this.evalutions.findIndex(value => value === undefined);
+          for (let j = 0; j < colQuantity; j++) {
+            $trElement.insertAdjacentHTML("beforeend", `<td>${count++}</td>`);
+          }
+        }
+      }
 
-			if (currentIndex !== -1) {
-				if (number < 0) {
-					this.evalutions[currentIndex] = 0;
-				} else if (number > 10) {
-					this.evalutions[currentIndex] = 10;
-				} else {
-					this.evalutions[currentIndex] = number;
-				}
-				return true;
-			}
-			return false;
-		}
-
-		student.prototype.summary = function() {
-  			const gpa = this.getGpa();
-  			const mVisit = this.attendances.reduce((accumulator, currentValue) => accumulator + currentValue) / 30;
-
-  			if (gpa > 9 && mVisit > 0.9) {
-  				return "Ути какой молодчинка!";
-  			} 
-
-  			if (gpa > 9 || mVisit > 0.9) {
-  					return "Норм, но можно лучше";
-  			}
-
-  			return "Редиска!";
-  		}
-
-  		//Function-constructor----------------------------------------------End
-
-
-  		//Test-----------------------------------------------------------------
-  		const student1 = new student("Иван", "Иванов", 1876);
-  		console.log(student1);
-
-  		console.log(student1.absent());
-  		console.log(student1.present());
-  		console.log(student1.absent());
-  		console.log(student1.present());
-  		console.log(student1.absent());
-
-  		console.log(student1.mark(5));
-  		console.log(student1.mark(3));
-  		console.log(student1.mark(10));
-  		console.log(student1.mark(10));
-  		console.log(student1.mark(10));
-
-  		for (var i = 0; i < 50; i++) {
-  			student1.present();
-  			student1.mark(10);
-  		}
-
-  		console.log(student1)
-
-  		console.log(student1.evalutions);
-  		console.log(student1.attendances);
-  		console.log(student1.getGpa());
-  		console.log(student1.getAge());
-  		console.log(student1.summary());
   	</script>
   </body>
 </html>
